@@ -81,103 +81,80 @@
         <!-- Los regalos se agregarán aquí dinámicamente -->
     </div>
 
-    <script>
-        // Aquí va el JavaScript
-        const gifts = [
-            { name: "Panera", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/sodimacPE/2394340_01/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
-            { name: "Huevera de céramica", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/7233/041/733/7233041733_2_7_1.jpg?t=1707483605041", description: "Imagen referencial" },
-            { name: "Manta para el sofá", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/2301/004/712/2301004712_2_7_1.jpg?t=1718615715152", description: "Imagen referencial" },
-            { name: "Bowls de metal", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881870827_1/w=800,h=800,fit=pad", description: "Imagen referencial" },
-            { name: "Máquina de canchita", image: "https://www.falabella.com.pe/cdn-cgi/imagedelivery/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881877985_1/width=240,height=240,quality=70,format=webp,fit=pad", description: "Imagen referencial" },
-            { name: "Velas", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/8424/705/310/8424705310_2_7_5.jpg?t=1720692315058&imformat=chrome&imwidth=342", description: "Imagen referencial" },
-            { name: "Taza medidora", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/10020376_1/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
-            { name: "Lo que desees...", image: "https://www.ikea.com/co/es/images/products/fejka-planta-artificial-con-matera-interior-exterior-suculenta__0614187_pe686812_s5.jpg?f=xl", description: "Desde plantas decorativas, hasta abarrotes o solo tu presencia"},
+<script>
+    const gifts = [
+        { name: "Panera", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/sodimacPE/2394340_01/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
+        { name: "Huevera de céramica", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/7233/041/733/7233041733_2_7_1.jpg?t=1707483605041", description: "Imagen referencial" },
+        { name: "Manta para el sofá", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/2301/004/712/2301004712_2_7_1.jpg?t=1718615715152", description: "Imagen referencial" },
+        { name: "Bowls de metal", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881870827_1/w=800,h=800,fit=pad", description: "Imagen referencial" },
+        { name: "Máquina de canchita", image: "https://www.falabella.com.pe/cdn-cgi/imagedelivery/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881877985_1/width=240,height=240,quality=70,format=webp,fit=pad", description: "Imagen referencial" },
+        { name: "Velas", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/8424/705/310/8424705310_2_7_5.jpg?t=1720692315058&imformat=chrome&imwidth=342", description: "Imagen referencial" },
+        { name: "Taza medidora", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/10020376_1/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
+        { name: "Lo que desees...", image: "https://www.ikea.com/co/es/images/products/fejka-planta-artificial-con-matera-interior-exterior-suculenta__0614187_pe686812_s5.jpg?f=xl", description: "Desde plantas decorativas, hasta abarrotes o solo tu presencia"},
+    ];
 
-            // Agrega más regalos aquí
-        ];
+    const giftList = document.getElementById('giftList');
 
-        const giftList = document.getElementById('giftList');
-
-        gifts.forEach((gift, index) => {
-    const giftItem = document.createElement('div');
-    giftItem.className = 'gift-item';
-    
-    let giftContent = `
-        <h3>${gift.name}</h3>
-    `;
-    
-    if (gift.image) {
-        giftContent += `<img src="${gift.image}" alt="${gift.name}">`;
-    }
-    
-    if (gift.description) {
-        giftContent += `<p>${gift.description}</p>`;
-    }
-    
-    // Añadir el botón de reservar solo si no es el último elemento
-    if (index !== gifts.length - 1) {
-        giftContent += `<button class="reserve-btn" data-gift="Panera">Reservar</button>`;
-        giftContent += `<button class="reserve-btn" data-gift="Huevera de cerámica">Reservar</button>`;
-        giftContent += `<button class="reserve-btn" data-gift="Manta para sofá">Reservar</button>`;
-        giftContent += `<button class="reserve-btn" data-gift="Bowls de metal">Reservar</button>`;
-        giftContent += `<button class="reserve-btn" data-gift="Velas">Reservar</button>`;
-        giftContent += `<button class="reserve-btn" data-gift="Taza medidora">Reservar</button>`;
-        }
-    
-    giftItem.innerHTML = giftContent;
-    giftList.appendChild(giftItem);
-});
-
-        giftList.addEventListener('click', function(e) {
-            if (e.target.classList.contains('reserve-btn')) {
-                if (!e.target.classList.contains('reserved')) {
-                    e.target.textContent = 'Reservado';
-                    e.target.classList.add('reserved');
-                    // Aquí podrías agregar código para guardar la reserva en el almacenamiento local
-                }
-            }
-        });
-        
-        const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec';
-
-        function loadReservations() {
-        fetch(`${SHEET_URL}?action=check`)
+    function loadGiftList() {
+        fetch('https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec?action=getGifts')
             .then(response => response.json())
-            .then(data => {
-            data.forEach(row => {
-                if (row[0] !== 'Regalo') {
-                const button = document.querySelector(`button[data-gift="${row[0]}"]`);
-                if (button) {
-                    button.textContent = 'Reservado';
-                    button.disabled = true;
-                }
-                }
+            .then(reservedGifts => {
+                giftList.innerHTML = '';
+                gifts.forEach((gift, index) => {
+                    const giftItem = document.createElement('div');
+                    giftItem.className = 'gift-item';
+                    
+                    const reservedGift = reservedGifts.find(g => g.name === gift.name);
+                    const isReserved = reservedGift && reservedGift.reserved;
+                    
+                    let giftContent = `
+                        <h3>${gift.name}</h3>
+                    `;
+                    
+                    if (gift.image) {
+                        giftContent += `<img src="${gift.image}" alt="${gift.name}">`;
+                    }
+                    
+                    if (gift.description) {
+                        giftContent += `<p>${gift.description}</p>`;
+                    }
+                    
+                    if (index !== gifts.length - 1) {
+                        giftContent += `<button class="reserve-btn" data-gift="${gift.name}" ${isReserved ? 'disabled' : ''}>
+                            ${isReserved ? 'Reservado' : 'Reservar'}
+                        </button>`;
+                    }
+                    
+                    giftItem.innerHTML = giftContent;
+                    giftList.appendChild(giftItem);
+                });
             });
-            });
-        }
+    }
 
-        function reserveGift(giftName) {
+    function reserveGift(giftName) {
         const name = prompt('Por favor, ingresa tu nombre o pon "Anónimo":');
         if (name) {
-            fetch(`${SHEET_URL}?action=reserve&gift=${encodeURIComponent(giftName)}&reservedBy=${encodeURIComponent(name)}`)
-            .then(response => response.text())
-            .then(result => {
-                if (result === 'Reserved') {
-                alert('¡Regalo reservado con éxito!');
-                loadReservations();
-                }
-            });
+            fetch(`https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec?action=reserveGift&gift=${encodeURIComponent(giftName)}&reservedBy=${encodeURIComponent(name)}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('¡Regalo reservado con éxito!');
+                        loadGiftList();
+                    } else {
+                        alert('Error al reservar el regalo. Por favor, intenta de nuevo.');
+                    }
+                });
         }
-        }
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-        loadReservations();
-        document.getElementById('giftList').addEventListener('click', (event) => {
+    document.addEventListener('DOMContentLoaded', () => {
+        loadGiftList();
+        giftList.addEventListener('click', (event) => {
             if (event.target.classList.contains('reserve-btn')) {
-            reserveGift(event.target.getAttribute('data-gift'));
+                reserveGift(event.target.getAttribute('data-gift'));
             }
         });
-        }); 
-    </script>
+    });
+</script>
 </body>
 </html>
