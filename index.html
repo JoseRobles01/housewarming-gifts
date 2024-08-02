@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housewarming Party - Lista de Regalos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .intro {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .gift-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 50px;
+        }
+        .gift-item {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .gift-item img {
+            width: 100%;
+            height: 200px; /* Altura fija para todas las imágenes */
+            object-fit: cover; /* Mantiene la proporción de la imagen */
+            border-radius: 5px;
+        }
+        .gift-item h3 {
+            margin-top: 5px;
+        }
+        .gift-item p {
+            flex-grow: 1; /* Permite que el párrafo ocupe el espacio restante */
+        }
+        .reserve-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: auto; /* Empuja el botón hacia abajo */
+        }
+        .reserve-btn:hover {
+            background-color: #2980b9;
+        }
+        .reserved {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Housewarming Party</h1>
+    
+    <div class="intro">
+        <h2>Bienvenidos a nuestra lista de regalos</h2>
+        <p>¡Estamos emocionados de celebrar nuestra nueva casa con ustedes! Para hacer las cosas más fáciles, hemos creado esta lista cositas que aun nos faltan. Por favor, seleccionen el regalo que deseen obsequiar haciendo clic en el botón "Reservar". Una vez reservado, el regalo no estará disponible para otros, evitando duplicados. ¡Gracias por ser parte de este momento especial!</p>
+    </div>
+
+    <div id="giftList" class="gift-list">
+        <!-- Los regalos se agregarán aquí dinámicamente -->
+    </div>
+
+    <script>
+        // Aquí va el JavaScript
+        const gifts = [
+            { name: "Panera", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/sodimacPE/2394340_01/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
+            { name: "Cesta para huevos", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCO/126534392_01/w=800,h=800,fit=pad", description: "Imagen referencial" },
+            { name: "Manta para el sofá", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/2301/004/712/2301004712_2_7_1.jpg?t=1718615715152", description: "Imagen referencial" },
+            { name: "Bowls de metal", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881870827_1/w=800,h=800,fit=pad", description: "Imagen referencial" },
+            { name: "Máquina de canchita", image: "https://www.falabella.com.pe/cdn-cgi/imagedelivery/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881877985_1/width=240,height=240,quality=70,format=webp,fit=pad", description: "Imagen referencial" },
+            { name: "Velas", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/8424/705/310/8424705310_2_7_5.jpg?t=1720692315058&imformat=chrome&imwidth=342", description: "Imagen referencial" },
+            { name: "Taza medidora", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/10020376_1/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
+            { name: "Lo que desees...", image: "https://www.ikea.com/co/es/images/products/fejka-planta-artificial-con-matera-interior-exterior-suculenta__0614187_pe686812_s5.jpg?f=xl", description: "Desde plantas decorativas, hasta abarrotes o solo tu presencia"},
+
+            // Agrega más regalos aquí
+        ];
+
+        const giftList = document.getElementById('giftList');
+
+        gifts.forEach((gift, index) => {
+    const giftItem = document.createElement('div');
+    giftItem.className = 'gift-item';
+    
+    let giftContent = `
+        <h3>${gift.name}</h3>
+    `;
+    
+    if (gift.image) {
+        giftContent += `<img src="${gift.image}" alt="${gift.name}">`;
+    }
+    
+    if (gift.description) {
+        giftContent += `<p>${gift.description}</p>`;
+    }
+    
+    // Añadir el botón de reservar solo si no es el último elemento
+    if (index !== gifts.length - 1) {
+        giftContent += `<button class="reserve-btn">Reservar</button>`;
+    }
+    
+    giftItem.innerHTML = giftContent;
+    giftList.appendChild(giftItem);
+});
+
+        giftList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('reserve-btn')) {
+                if (!e.target.classList.contains('reserved')) {
+                    e.target.textContent = 'Reservado';
+                    e.target.classList.add('reserved');
+                    // Aquí podrías agregar código para guardar la reserva en el almacenamiento local
+                }
+            }
+        });
+    </script>
+</body>
+</html>
