@@ -74,7 +74,7 @@
     
     <div class="intro">
         <h2>Bienvenidos a nuestra lista de regalos</h2>
-        <p>¡Estamos emocionados de celebrar nuestra nueva casa con ustedes! Para hacer las cosas más fáciles, hemos creado esta lista cositas que aun nos faltan. Por favor, seleccionen el regalo que deseen obsequiar haciendo clic en el botón "Reservar". Una vez reservado, el regalo no estará disponible para otros, evitando duplicados. ¡Gracias por ser parte de este momento especial!</p>
+        <p>¡Estamos emocionados de celebrar nuestra nuevo depa con ustedes! Para hacer las cosas más sencillas, hemos creado esta lista cositas que aun nos faltan. Por favor, seleccionen el regalo que deseen obsequiar haciendo clic en el botón "Reservar". Una vez reservado, el regalo no estará disponible para otros, evitando duplicados. ¡Gracias por ser parte de este momento especial!</p>
     </div>
 
     <div id="giftList" class="gift-list">
@@ -116,8 +116,13 @@
     
     // Añadir el botón de reservar solo si no es el último elemento
     if (index !== gifts.length - 1) {
-        giftContent += `<button class="reserve-btn" data-gift="Nombre del regalo">Reservar</button>`;
-    }
+        giftContent += `<button class="reserve-btn" data-gift="Panera">Reservar</button>`;
+        giftContent += `<button class="reserve-btn" data-gift="Huevera de cerámica">Reservar</button>`;
+        giftContent += `<button class="reserve-btn" data-gift="Manta para sofá">Reservar</button>`;
+        giftContent += `<button class="reserve-btn" data-gift="Bowls de metal">Reservar</button>`;
+        giftContent += `<button class="reserve-btn" data-gift="Velas">Reservar</button>`;
+        giftContent += `<button class="reserve-btn" data-gift="Taza medidora">Reservar</button>`;
+        }
     
     giftItem.innerHTML = giftContent;
     giftList.appendChild(giftItem);
