@@ -105,7 +105,7 @@
                     giftItem.className = 'gift-item';
                     
                     const reservedGift = reservedGifts.find(g => g.name === gift.name);
-                    const isReserved = reservedGift && reservedGift.reserved;
+                    const isReserved = reservedGift && reservedGift.reserved === 'Sí';
                     
                     let giftContent = `
                         <h3>${gift.name}</h3>
@@ -120,7 +120,7 @@
                     }
                     
                     if (index !== gifts.length - 1) {
-                        giftContent += `<button class="reserve-btn" data-gift="${gift.name}" ${isReserved ? 'disabled' : ''}>
+                        giftContent += `<button class="reserve-btn ${isReserved ? 'reserved' : ''}" data-gift="${gift.name}" ${isReserved ? 'disabled' : ''}>
                             ${isReserved ? 'Reservado' : 'Reservar'}
                         </button>`;
                     }
@@ -128,7 +128,33 @@
                     giftItem.innerHTML = giftContent;
                     giftList.appendChild(giftItem);
                 });
+            })
+            .catch(error => {
+                console.error('Error al cargar la lista de regalos:', error);
+                // Si hay un error, mostrar los regalos sin información de reserva
+                displayGiftsWithoutReservationInfo();
             });
+    }
+
+    function displayGiftsWithoutReservationInfo() {
+        giftList.innerHTML = '';
+        gifts.forEach((gift, index) => {
+            const giftItem = document.createElement('div');
+            giftItem.className = 'gift-item';
+            
+            let giftContent = `
+                <h3>${gift.name}</h3>
+                <img src="${gift.image}" alt="${gift.name}">
+                <p>${gift.description}</p>
+            `;
+            
+            if (index !== gifts.length - 1) {
+                giftContent += `<button class="reserve-btn" data-gift="${gift.name}">Reservar</button>`;
+            }
+            
+            giftItem.innerHTML = giftContent;
+            giftList.appendChild(giftItem);
+        });
     }
 
     function reserveGift(giftName) {
@@ -143,18 +169,21 @@
                     } else {
                         alert('Error al reservar el regalo. Por favor, intenta de nuevo.');
                     }
+                })
+                .catch(error => {
+                    console.error('Error al reservar el regalo:', error);
+                    alert('Error al reservar el regalo. Por favor, intenta de nuevo.');
                 });
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        loadGiftList();
-        giftList.addEventListener('click', (event) => {
-            if (event.target.classList.contains('reserve-btn')) {
-                reserveGift(event.target.getAttribute('data-gift'));
-            }
-        });
+    document.addEventListener('DOMContentLoaded', loadGiftList);
+    giftList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('reserve-btn')) {
+            reserveGift(event.target.getAttribute('data-gift'));
+        }
     });
 </script>
+
 </body>
 </html>
