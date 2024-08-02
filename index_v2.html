@@ -85,7 +85,7 @@
         // Aquí va el JavaScript
         const gifts = [
             { name: "Panera", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/sodimacPE/2394340_01/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
-            { name: "Cesta para huevos", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/7233/041/733/7233041733_2_7_1.jpg?t=1707483605041", description: "Imagen referencial" },
+            { name: "Huevera de céramica", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/7233/041/733/7233041733_2_7_1.jpg?t=1707483605041", description: "Imagen referencial" },
             { name: "Manta para el sofá", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/2301/004/712/2301004712_2_7_1.jpg?t=1718615715152", description: "Imagen referencial" },
             { name: "Bowls de metal", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881870827_1/w=800,h=800,fit=pad", description: "Imagen referencial" },
             { name: "Máquina de canchita", image: "https://www.falabella.com.pe/cdn-cgi/imagedelivery/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881877985_1/width=240,height=240,quality=70,format=webp,fit=pad", description: "Imagen referencial" },
@@ -132,6 +132,47 @@
                 }
             }
         });
+        
+        const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec';
+
+        function loadReservations() {
+        fetch(`${SHEET_URL}?action=check`)
+            .then(response => response.json())
+            .then(data => {
+            data.forEach(row => {
+                if (row[0] !== 'Regalo') {
+                const button = document.querySelector(`button[data-gift="${row[0]}"]`);
+                if (button) {
+                    button.textContent = 'Reservado';
+                    button.disabled = true;
+                }
+                }
+            });
+            });
+        }
+
+        function reserveGift(giftName) {
+        const name = prompt('Por favor, ingresa tu nombre o pon "Anónimo":');
+        if (name) {
+            fetch(`${SHEET_URL}?action=reserve&gift=${encodeURIComponent(giftName)}&reservedBy=${encodeURIComponent(name)}`)
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'Reserved') {
+                alert('¡Regalo reservado con éxito!');
+                loadReservations();
+                }
+            });
+        }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        loadReservations();
+        document.getElementById('giftList').addEventListener('click', (event) => {
+            if (event.target.classList.contains('reserve-btn')) {
+            reserveGift(event.target.getAttribute('data-gift'));
+            }
+        });
+        }); 
     </script>
 </body>
 </html>
