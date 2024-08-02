@@ -116,7 +116,7 @@
     
     // Añadir el botón de reservar solo si no es el último elemento
     if (index !== gifts.length - 1) {
-        giftContent += `<button class="reserve-btn">Reservar</button>`;
+        giftContent += `<button class="reserve-btn" data-gift="Nombre del regalo">Reservar</button>`;
     }
     
     giftItem.innerHTML = giftContent;
