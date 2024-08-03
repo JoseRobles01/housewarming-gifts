@@ -67,6 +67,26 @@
             background-color: #95a5a6;
             cursor: not-allowed;
         }
+        .reserve-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        }
+
+        .reserve-btn:hover:not(:disabled) {
+            background-color: #2980b9;
+        }
+    
+        .reserve-btn.reserved,
+        .reserve-btn:disabled {
+            background-color: #95a5a6;
+            color: #7f8c8d;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -104,20 +124,14 @@
             })
             .catch(error => {
                 console.error('Error al cargar la lista de regalos:', error);
-                displayGiftsWithoutReservationInfo();
             });
     }
 
     function updateGiftList(reservedGifts) {
-        gifts.forEach((gift, index) => {
-            const giftItem = document.querySelector(`.gift-item[data-gift="${gift.name}"]`);
-            if (!giftItem) return;
-
-            const reservedGift = reservedGifts.find(g => g.name === gift.name);
-            const isReserved = reservedGift && reservedGift.reserved === 'Sí';
-            
-            const button = giftItem.querySelector('.reserve-btn');
+        gifts.forEach((gift) => {
+            const button = document.querySelector(`.reserve-btn[data-gift="${gift.name}"]`);
             if (button) {
+                const isReserved = reservedGifts.some(g => g.name === gift.name && g.reserved === 'Sí');
                 button.textContent = isReserved ? 'Reservado' : 'Reservar';
                 button.disabled = isReserved;
                 button.classList.toggle('reserved', isReserved);
@@ -130,7 +144,6 @@
         gifts.forEach((gift, index) => {
             const giftItem = document.createElement('div');
             giftItem.className = 'gift-item';
-            giftItem.setAttribute('data-gift', gift.name);
             
             let giftContent = `
                 <h3>${gift.name}</h3>
@@ -148,19 +161,37 @@
     }
 
     function reserveGift(giftName) {
+        const button = document.querySelector(`.reserve-btn[data-gift="${giftName}"]`);
+        if (button) {
+            button.textContent = 'Reservando...';
+            button.disabled = true;
+        }
+
         fetch(`${APP_SCRIPT_URL}?action=reserveGift&gift=${encodeURIComponent(giftName)}`)
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
                     alert('¡Regalo reservado con éxito!');
-                    loadGiftList();
+                    if (button) {
+                        button.textContent = 'Reservado';
+                        button.classList.add('reserved');
+                    }
+                    loadGiftList(); // Actualiza toda la lista
                 } else {
                     alert(`Error al reservar el regalo: ${result.error || 'Razón desconocida'}`);
+                    if (button) {
+                        button.textContent = 'Reservar';
+                        button.disabled = false;
+                    }
                 }
             })
             .catch(error => {
                 console.error('Error al reservar el regalo:', error);
                 alert(`Error al reservar el regalo: ${error.message}`);
+                if (button) {
+                    button.textContent = 'Reservar';
+                    button.disabled = false;
+                }
             });
     }
 
@@ -175,11 +206,11 @@
     });
 
     giftList.addEventListener('click', (event) => {
-        if (event.target.classList.contains('reserve-btn')) {
+        if (event.target.classList.contains('reserve-btn') && !event.target.disabled) {
             reserveGift(event.target.getAttribute('data-gift'));
         }
     });
-    </script>
+</script>
 
 </body>
 </html>
