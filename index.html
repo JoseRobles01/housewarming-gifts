@@ -100,24 +100,22 @@
         const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykYSW4H3K0-6N2cJprcGhBm46IzuTQxW_NmbJTvaBYBJc9dpfY1gAGLfYh50mhnpsRIg/exec';
 
         function loadGiftList() {
-        console.log('Cargando lista de regalos...');
-        fetch(`${APP_SCRIPT_URL}?action=getGifts`)
-            .then(response => response.json())
-            .then(reservedGifts => {
-                console.log('Lista de regalos recibida:', reservedGifts);
-                updateGiftList(reservedGifts);
-            })
-            .catch(error => {
-                console.error('Error al cargar la lista de regalos:', error);
-            });
+            fetch(`${APP_SCRIPT_URL}?action=getGifts`)
+                .then(response => response.json())
+                .then(gifts => {
+                    reservedGifts = gifts; // Actualiza la variable global
+                    updateGiftList();
+                })
+                .catch(error => {
+                    console.error('Error al cargar la lista de regalos:', error);
+                });
         }
     
-        function updateGiftList(reservedGifts) {
+        function updateGiftList() {
             gifts.forEach((gift) => {
                 const button = document.querySelector(`.reserve-btn[data-gift="${gift.name}"]`);
                 if (button) {
-                    const isReserved = reservedGifts.some(g => g.name === gift.name && g.reserved === 'Sí');
-                    console.log(`Actualizando botón para ${gift.name}. Reservado: ${isReserved}`);
+                    const isReserved = isGiftReserved(gift.name);
                     updateButtonState(button, isReserved);
                 }
             });
