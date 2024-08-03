@@ -99,6 +99,8 @@
         const giftList = document.getElementById('giftList');
         const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykYSW4H3K0-6N2cJprcGhBm46IzuTQxW_NmbJTvaBYBJc9dpfY1gAGLfYh50mhnpsRIg/exec';
 
+        let reservedGifts = []; // Variable global para almacenar el estado de los regalos
+        
         function loadGiftList() {
             fetch(`${APP_SCRIPT_URL}?action=getGifts`)
                 .then(response => response.json())
@@ -200,7 +202,6 @@
             return reservedGifts.some(gift => gift.name === giftName && gift.reserved);
         }
 
-        let reservedGifts = []; // Variable global para almacenar el estado de los regalos
         
 </script>
 
