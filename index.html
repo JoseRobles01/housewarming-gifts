@@ -95,8 +95,10 @@
 
     const giftList = document.getElementById('giftList');
 
+    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwUTAZq5sZ1hXy0Vf5Y_a6w80pM2bSnobqvV5sfs8KRNLxvo8SkUqKbKobrBIec4a6Pg/exec';
+
     function loadGiftList() {
-        fetch('https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec?action=getGifts')
+        fetch(`${APP_SCRIPT_URL}?action=getGifts`')
             .then(response => response.json())
             .then(reservedGifts => {
                 giftList.innerHTML = '';
@@ -158,27 +160,27 @@
     }
 
         function reserveGift(giftName) {
-            fetch(`https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec?action=reserveGift&gift=${encodeURIComponent(giftName)}`)
-                .then(response => response.text())
-                .then(result => {
-                    console.log('Server response:', result);
-                    try {
-                        const jsonResult = JSON.parse(result);
-                        if (jsonResult.success) {
-                            alert('¡Regalo reservado con éxito!');
-                            loadGiftList();
-                        } else {
-                            alert(`Error al reservar el regalo: ${jsonResult.error || 'Razón desconocida'}`);
-                        }
-                    } catch (e) {
-                        console.error('Error parsing JSON:', e);
-                        alert(`Error al reservar el regalo: ${result}`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al reservar el regalo:', error);
-                    alert(`Error al reservar el regalo: ${error.message}`);
-                });
+    fetch(`${APP_SCRIPT_URL}?action=reserveGift&gift=${encodeURIComponent(giftName)}`)
+        .then(response => response.text())
+        .then(result => {
+            console.log('Server response:', result);
+            try {
+                const jsonResult = JSON.parse(result);
+                if (jsonResult.success) {
+                    alert('¡Regalo reservado con éxito!');
+                    loadGiftList();
+                } else {
+                    alert(`Error al reservar el regalo: ${jsonResult.error || 'Razón desconocida'}`);
+                }
+            } catch (e) {
+                console.error('Error parsing JSON:', e);
+                alert(`Error al reservar el regalo: ${result}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error al reservar el regalo:', error);
+            alert(`Error al reservar el regalo: ${error.message}`);
+        });
         }
 
     document.addEventListener('DOMContentLoaded', loadGiftList);
