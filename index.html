@@ -13,6 +13,7 @@
             margin: 0 auto;
             padding: 20px;
             background-color: #f4f4f4;
+            margin-bottom: 50px; /* Ajusta este valor según la altura de tu footer */
         }
         h1 {
             color: #2c3e50;
@@ -69,7 +70,23 @@
         background-color: #95a5a6;
         color: #7f8c8d;
         cursor: not-allowed;
-    }
+        }
+        
+        footer {
+        background-color: #34495e;
+        color: #ecf0f1;
+        text-align: center;
+        padding: 5px 0;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        font-size: 8px;
+        }
+
+        footer p {
+        margin: 0;
+        }
+        
     </style>
 </head>
 <body>
@@ -93,7 +110,9 @@
             { name: "Máquina de canchita", image: "https://www.falabella.com.pe/cdn-cgi/imagedelivery/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/881877985_1/width=240,height=240,quality=70,format=webp,fit=pad", description: "Imagen referencial" },
             { name: "Velas", image: "https://static.zarahome.net/8/photos4/2024/I/4/1/p/8424/705/310/8424705310_2_7_5.jpg?t=1720692315058&imformat=chrome&imwidth=342", description: "Imagen referencial" },
             { name: "Taza medidora", image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/10020376_1/w=1500,h=1500,fit=pad", description: "Imagen referencial" },
-            { name: "Play Station", image: "https://coolboxpe.vtexassets.com/arquivos/ids/327556-800-auto?v=638356608734100000&width=800&height=auto&aspect=true", description: "Imagen referencial" },
+            { name: "Varitas Aromatizantes", image: "https://kallma.com/cdn/shop/products/HO_PN_PS_1.jpg?v=1688150932&width=700", description: "Imagen referencial" },
+            { name: "Mini Rallador", image: "https://tramontinastorepe.vteximg.com.br/arquivos/ids/1138218/25641100PNM001B.png?v=638520825049200000", description: "Imagen referencial" },
+            { name: "Lámpara de sala", image: "https://home.ripley.com.pe/Attachment/WOP_5/2030216655303/2030216655303_2.jpg", description: "Imagen referencial" },
             { name: "Lo que desees...", image: "https://www.ikea.com/co/es/images/products/fejka-planta-artificial-con-matera-interior-exterior-suculenta__0614187_pe686812_s5.jpg?f=xl", description: "Desde plantas decorativas, hasta abarrotes o solo tu presencia"},
         ];
     
@@ -139,9 +158,9 @@
                 const isReserved = isGiftReserved(gift.name);
                 
                 let giftContent = `
-                    <h3>${gift.name}</h3>
+                    <h3 style="text-align: center">${gift.name}</h3>
                     <img src="${gift.image}" alt="${gift.name}">
-                    <p>${gift.description}</p>
+                    <p style="font-size : 8px; text-align: center">${gift.description}</p>
                 `;
                 
                 if (index !== gifts.length - 1) {
@@ -207,5 +226,9 @@
         
 </script>
 
+<footer>
+    <p>Powered by Robles & Pasache Inc.</p>
+</footer>
+    
 </body>
 </html>
