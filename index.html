@@ -157,25 +157,29 @@
         });
     }
 
-    function reserveGift(giftName) {
-        const name = prompt('Por favor, ingresa tu nombre o pon "Anónimo":');
-        if (name) {
-            fetch(`https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec?action=reserveGift&gift=${encodeURIComponent(giftName)}&reservedBy=${encodeURIComponent(name)}`)
-                .then(response => response.json())
+        function reserveGift(giftName) {
+            fetch(`https://script.google.com/macros/s/AKfycbxW5da6pmukpx0YB3Vw09HMes7dTk8wUQYF6rkcnwzUjTUCozqhyZ5oBcXJjqCEtKJPZQ/exec?action=reserveGift&gift=${encodeURIComponent(giftName)}`)
+                .then(response => response.text())
                 .then(result => {
-                    if (result.success) {
-                        alert('¡Regalo reservado con éxito!');
-                        loadGiftList();
-                    } else {
-                        alert('Error al reservar el regalo. Por favor, intenta de nuevo.');
+                    console.log('Server response:', result);
+                    try {
+                        const jsonResult = JSON.parse(result);
+                        if (jsonResult.success) {
+                            alert('¡Regalo reservado con éxito!');
+                            loadGiftList();
+                        } else {
+                            alert(`Error al reservar el regalo: ${jsonResult.error || 'Razón desconocida'}`);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing JSON:', e);
+                        alert(`Error al reservar el regalo: ${result}`);
                     }
                 })
                 .catch(error => {
                     console.error('Error al reservar el regalo:', error);
-                    alert('Error al reservar el regalo. Por favor, intenta de nuevo.');
+                    alert(`Error al reservar el regalo: ${error.message}`);
                 });
         }
-    }
 
     document.addEventListener('DOMContentLoaded', loadGiftList);
     giftList.addEventListener('click', (event) => {
