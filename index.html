@@ -124,8 +124,7 @@
         function updateButtonState(button, isReserved) {
             button.textContent = isReserved ? 'Reservado' : 'Reservar';
             button.disabled = isReserved;
-            button.classList.toggle('reserved', isReserved);
-            console.log(`Estado del botón actualizado: ${button.textContent}`);
+            button.className = `reserve-btn ${isReserved ? 'reserved' : ''}`;
         }
     
         function displayGifts() {
@@ -158,24 +157,20 @@
         }
     
         function reserveGift(giftName) {
-            console.log(`Intentando reservar: ${giftName}`);
             const button = document.querySelector(`.reserve-btn[data-gift="${giftName}"]`);
             if (button) {
                 button.textContent = 'Reservando...';
                 button.disabled = true;
             }
-    
+        
             fetch(`${APP_SCRIPT_URL}?action=reserveGift&gift=${encodeURIComponent(giftName)}`)
                 .then(response => response.json())
                 .then(result => {
-                    console.log('Respuesta de reserva:', result);
                     if (result.success) {
                         alert('¡Regalo reservado con éxito!');
-                        if (button) {
-                            updateButtonState(button, true);
-                        }
+                        loadGiftList(); // Recarga la lista completa
                     } else {
-                        alert(`Error al reservar el regalo: ${result.error || 'Razón desconocida'}`);
+                        alert(`Error al reservar el regalo: ${result.error}`);
                         if (button) {
                             updateButtonState(button, false);
                         }
@@ -187,23 +182,12 @@
                     if (button) {
                         updateButtonState(button, false);
                     }
-                })
-                .finally(() => {
-                    console.log('Actualizando lista después de intento de reserva');
-                    loadGiftList();
                 });
         }
     
-        function startPeriodicUpdate() {
-            console.log('Iniciando actualizaciones periódicas');
-            setInterval(loadGiftList, 5000);
-        }
-    
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM cargado, inicializando...');
-            displayGifts();
             loadGiftList();
-            startPeriodicUpdate();
+            setInterval(loadGiftList, 5000); // Actualiza cada 5 segundos
         });
     
         giftList.addEventListener('click', (event) => {
