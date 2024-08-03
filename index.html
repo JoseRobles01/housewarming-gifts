@@ -136,6 +136,8 @@
                 const giftItem = document.createElement('div');
                 giftItem.className = 'gift-item';
                 
+                const isReserved = isGiftReserved(gift.name);
+                
                 let giftContent = `
                     <h3>${gift.name}</h3>
                     <img src="${gift.image}" alt="${gift.name}">
@@ -143,13 +145,18 @@
                 `;
                 
                 if (index !== gifts.length - 1) {
-                    giftContent += `<button class="reserve-btn" data-gift="${gift.name}">Reservar</button>`;
+                    giftContent += `
+                        <button class="reserve-btn ${isReserved ? 'reserved' : ''}" 
+                                data-gift="${gift.name}" 
+                                ${isReserved ? 'disabled' : ''}>
+                            ${isReserved ? 'Reservado' : 'Reservar'}
+                        </button>
+                    `;
                 }
                 
                 giftItem.innerHTML = giftContent;
                 giftList.appendChild(giftItem);
             });
-            console.log('Gifts displayed');
         }
     
         function reserveGift(giftName) {
@@ -206,6 +213,12 @@
                 reserveGift(event.target.getAttribute('data-gift'));
             }
         });
+
+        function isGiftReserved(giftName) {
+            return reservedGifts.some(gift => gift.name === giftName && gift.reserved);
+        }
+
+        let reservedGifts = []; // Variable global para almacenar el estado de los regalos
         
 </script>
 
